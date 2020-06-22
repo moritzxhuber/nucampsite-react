@@ -8,6 +8,8 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
+import { Fade, Stagger } from "react-animation-components";
 
 function RenderPartner({ partner }) {
   if (partner) {
@@ -27,14 +29,6 @@ function RenderPartner({ partner }) {
 export default About;
 
 function About(props) {
-  const partners = props.partners.map((partner) => {
-    return (
-      <Media key={partner.id} tag="li">
-        <RenderPartner partner={partner} />
-      </Media>
-    );
-  });
-
   return (
     <div className="container">
       <div className="row">
@@ -105,7 +99,64 @@ function About(props) {
           <h3>Community Partners</h3>
         </div>
         <div className="col mt-4">
-          <Media list>{partners}</Media>
+          <PartnerList partners={props.partners} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PartnerList(props) {
+  const partners = props.partners.partners.map((partner) => {
+    return (
+      <Fade key={partner.id}>
+        <Media tag="li">
+          <RenderPartner partner={partner} />
+        </Media>
+      </Fade>
+    );
+  });
+
+  if (props.partners.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+  if (props.partners.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <h4>{props.partners.errMess}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/home">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>About Us</BreadcrumbItem>
+          </Breadcrumb>
+          <h2>About Us</h2>
+          <hr />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col mt-1">
+          <Media list>
+            <Stagger>{partners}</Stagger>
+          </Media>
         </div>
       </div>
     </div>
