@@ -9,13 +9,19 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 import { Fade, Stagger } from "react-animation-components";
 
 function RenderPartner({ partner }) {
   if (partner) {
     return (
       <React.Fragment>
-        <Media object src={partner.image} alt={partner.name} width="150" />
+        <Media
+          object
+          src={baseUrl + partner.image}
+          alt={partner.name}
+          width="150"
+        />
         <Media body className="ml-5 mb-4">
           <Media heading>{partner.name}</Media>
           {partner.description}
@@ -25,8 +31,6 @@ function RenderPartner({ partner }) {
   }
   return <div />;
 }
-
-export default About;
 
 function About(props) {
   return (
@@ -155,10 +159,12 @@ function PartnerList(props) {
       <div className="row">
         <div className="col mt-1">
           <Media list>
-            <Stagger>{partners}</Stagger>
+            <Stagger in>{partners}</Stagger>
           </Media>
         </div>
       </div>
     </div>
   );
 }
+
+export default About;
